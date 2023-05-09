@@ -358,7 +358,9 @@ end
 H.get_commentstring = function(ref_position)
   local buf_cs = vim.api.nvim_buf_get_option(0, 'commentstring')
 
-  -- NOTE: this is intended to work only on Neovim>=0.9
+  -- Neovim<0.9 can only have buffer 'commentstring'
+  if vim.fn.has('nvim-0.9') == 0 then return buf_cs end
+
   local has_ts_parser, ts_parser = pcall(vim.treesitter.get_parser)
   if not has_ts_parser then return buf_cs end
 
